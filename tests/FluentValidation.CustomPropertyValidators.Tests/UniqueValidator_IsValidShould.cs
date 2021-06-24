@@ -22,7 +22,7 @@ namespace FluentValidation.CustomPropertyValidators.Tests
         [TestCase("uniqueUsername1")]
         public void IsValid_UserListNotContainsUsername_ReturnTrue(string username)
         {
-            var uniqueValidator = new UniqueValidator<User, string>();
+            var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)));
             var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
             var user = new User { Username = username };
             var result = validator.Validate(user);
@@ -35,7 +35,7 @@ namespace FluentValidation.CustomPropertyValidators.Tests
         [TestCase("user3")]
         public void IsValid_UserListContainsUsername_ReturnFalse(string username)
         {
-            var uniqueValidator = new UniqueValidator<User, string>();
+            var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)));
             var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
             var user = new User { Username = username };
             var result = validator.Validate(user);
@@ -48,7 +48,7 @@ namespace FluentValidation.CustomPropertyValidators.Tests
         [TestCase("user3", 3)]
         public void IsValid_UserListContainsUsernameAndIdsAreEqual_ReturnTrue(string username, int id)
         {
-            var uniqueValidator = new UniqueValidator<User, string>();
+            var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)), x => x.Id);
             var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
             var user = new User { Id = id, Username = username };
             var result = validator.Validate(user);
@@ -61,7 +61,7 @@ namespace FluentValidation.CustomPropertyValidators.Tests
         [TestCase("user3", 1)]
         public void IsValid_UserListContainsUsernameAndIdsAreNotEqual_ReturnFalse(string username, int id)
         {
-            var uniqueValidator = new UniqueValidator<User, string>();
+            var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)), x => x.Id);
             var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
             var user = new User { Id = id, Username = username };
             var result = validator.Validate(user);
@@ -74,7 +74,7 @@ namespace FluentValidation.CustomPropertyValidators.Tests
         [TestCase("user3", 3, "user3@domain.com")]
         public void IsValid_UserListContainsUsernameAndIdsAndEmailsAreEqual_ReturnTrue(string username, int id, string email)
         {
-            var uniqueValidator = new UniqueValidator<User, string>();
+            var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)), x => x.Id, x => x.Email);
             var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
             var user = new User { Id = id, Email = email, Username = username };
             var result = validator.Validate(user);
@@ -90,7 +90,7 @@ namespace FluentValidation.CustomPropertyValidators.Tests
         [TestCase("user3", 1, "user3@domain.com")]
         public void IsValid_UserListContainsUsernameAndIdsAndEmailsAreNotEqual_ReturnFalse(string username, int id, string email)
         {
-            var uniqueValidator = new UniqueValidator<User, string>();
+            var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)), x => x.Id, x => x.Email);
             var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
             var user = new User { Id = id, Email = email, Username = username };
             var result = validator.Validate(user);
