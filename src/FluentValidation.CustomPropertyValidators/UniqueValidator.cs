@@ -11,6 +11,8 @@ namespace FluentValidation.CustomPropertyValidators
         private readonly Func<T, object> _originalItem;
         private readonly Expression<Func<T, object>>[] _primaryKeys;
 
+        /// <param name="originalItem">A function that returns the original instance of the current item.</param>
+        /// <param name="primaryKeys">A function that returns the original instance of the current item.</param>
         public UniqueValidator(Func<T, object> originalItem, params Expression<Func<T, object>>[] primaryKeys)
         {
             _originalItem = originalItem;
