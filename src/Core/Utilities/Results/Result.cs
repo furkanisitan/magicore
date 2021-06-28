@@ -8,7 +8,7 @@ namespace Core.Utilities.Results
         public bool Success { get; set; }
         public string Message { get; set; }
 
-        public static ResultBuilder<object> Builder() => new();
+        public static ResultBuilder Builder() => new();
         public static ResultBuilder<T> Builder<T>(T data) => new(data);
     }
 

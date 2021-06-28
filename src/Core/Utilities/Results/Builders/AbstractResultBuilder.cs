@@ -3,11 +3,10 @@ using System;
 
 namespace Core.Utilities.Results.Builders
 {
-    public abstract class AbstractResultBuilder<TResult, TBuilder, TData>
-        where TResult : class, IResult<TData>, new()
-        where TBuilder : AbstractResultBuilder<TResult, TBuilder, TData>
+    public abstract class AbstractResultBuilder<TResult, TBuilder>
+        where TResult : class, IResult, new()
+        where TBuilder : AbstractResultBuilder<TResult, TBuilder>
     {
-
         protected readonly TBuilder Builder;
         protected readonly TResult Result;
 
@@ -15,11 +14,6 @@ namespace Core.Utilities.Results.Builders
         {
             Builder = (TBuilder)this;
             Result = Activator.CreateInstance<TResult>();
-        }
-
-        protected AbstractResultBuilder(TData data) : this()
-        {
-            Result.Data = data;
         }
 
         public TBuilder Success(bool success = true)
@@ -33,9 +27,18 @@ namespace Core.Utilities.Results.Builders
             Result.Message = message;
             return Builder;
         }
-        public TResult Build()
+
+        public TResult Build() => Result;
+
+    }
+
+    public abstract class AbstractResultBuilder<TResult, TBuilder, TData> : AbstractResultBuilder<TResult, TBuilder>
+        where TResult : class, IResult<TData>, new()
+        where TBuilder : AbstractResultBuilder<TResult, TBuilder, TData>
+    {
+        protected AbstractResultBuilder(TData data)
         {
-            return Result;
+            Result.Data = data;
         }
 
     }

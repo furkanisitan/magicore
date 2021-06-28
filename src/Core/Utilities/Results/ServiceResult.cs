@@ -7,7 +7,7 @@ namespace Core.Utilities.Results
     {
         public int StatusCode { get; set; }
 
-        public new static ServiceResultBuilder<object> Builder() => new();
+        public new static ServiceResultBuilder Builder() => new();
 
         public new static ServiceResultBuilder<T> Builder<T>(T data) => new(data);
     }
