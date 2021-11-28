@@ -11,18 +11,18 @@ namespace Core.DataAccess.EntityFramework
         where TEntity : class, IEntity, new()
         where TContext : DbContext, new()
     {
-        public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate, params string[] includeProperties) =>
-            FindAllHelper(predicate, includeProperties);
+        public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties) =>
+            FindAllHelper(predicate, navigationProperties);
 
-        public ICollection<TEntity> FindAll(params string[] includeProperties) =>
-            FindAllHelper(null, includeProperties);
+        public ICollection<TEntity> FindAll(params string[] navigationProperties) =>
+            FindAllHelper(null, navigationProperties);
 
-        public TEntity Find(Expression<Func<TEntity, bool>> predicate, params string[] includeProperties)
+        public TEntity Find(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties)
         {
             using var context = new TContext();
             var query = context.Set<TEntity>().AsQueryable();
 
-            query = includeProperties.Aggregate(query, (current, includeProperty) =>
+            query = navigationProperties.Aggregate(query, (current, includeProperty) =>
                 current.Include(includeProperty));
 
             return query.FirstOrDefault(predicate);
@@ -57,14 +57,14 @@ namespace Core.DataAccess.EntityFramework
 
         #region Private Methods
 
-        private ICollection<TEntity> FindAllHelper(Expression<Func<TEntity, bool>> predicate = null, params string[] includeProperties)
+        private ICollection<TEntity> FindAllHelper(Expression<Func<TEntity, bool>> predicate = null, params string[] navigationProperties)
         {
             using var context = new TContext();
             var query = context.Set<TEntity>().AsQueryable();
 
             if (predicate != null) query = query.Where(predicate);
 
-            return includeProperties.Aggregate(query, (current, includeProperty) =>
+            return navigationProperties.Aggregate(query, (current, includeProperty) =>
                 current.Include(includeProperty)).ToList();
         }
 
@@ -76,12 +76,12 @@ namespace Core.DataAccess.EntityFramework
         where TContext : DbContext, new()
         where TKey : IEquatable<TKey>
     {
-        public TEntity FindById(TKey id, params string[] includeProperties)
+        public TEntity FindById(TKey id, params string[] navigationProperties)
         {
             using var context = new TContext();
             var query = context.Set<TEntity>().AsQueryable();
 
-            query = includeProperties.Aggregate(query, (current, includeProperty) =>
+            query = navigationProperties.Aggregate(query, (current, includeProperty) =>
                 current.Include(includeProperty));
 
             return query.FirstOrDefault(x => x.Id.Equals(id));
