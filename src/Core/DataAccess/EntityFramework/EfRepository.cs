@@ -22,8 +22,8 @@ namespace Core.DataAccess.EntityFramework
             using var context = new TContext();
             var query = context.Set<TEntity>().AsQueryable();
 
-            query = navigationProperties.Aggregate(query, (current, includeProperty) =>
-                current.Include(includeProperty));
+            query = navigationProperties.Aggregate(query, (current, navigationProperty) =>
+                current.Include(navigationProperty));
 
             return query.FirstOrDefault(predicate);
         }
@@ -64,8 +64,8 @@ namespace Core.DataAccess.EntityFramework
 
             if (predicate != null) query = query.Where(predicate);
 
-            return navigationProperties.Aggregate(query, (current, includeProperty) =>
-                current.Include(includeProperty)).ToList();
+            return navigationProperties.Aggregate(query, (current, navigationProperty) =>
+                current.Include(navigationProperty)).ToList();
         }
 
         #endregion
@@ -81,8 +81,8 @@ namespace Core.DataAccess.EntityFramework
             using var context = new TContext();
             var query = context.Set<TEntity>().AsQueryable();
 
-            query = navigationProperties.Aggregate(query, (current, includeProperty) =>
-                current.Include(includeProperty));
+            query = navigationProperties.Aggregate(query, (current, navigationProperty) =>
+                current.Include(navigationProperty));
 
             return query.FirstOrDefault(x => x.Id.Equals(id));
         }
