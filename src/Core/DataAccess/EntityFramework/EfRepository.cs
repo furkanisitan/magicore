@@ -7,10 +7,34 @@ using System.Linq.Expressions;
 
 namespace Core.DataAccess.EntityFramework
 {
-    public abstract class EfRepository<TEntity, TContext> : IRepository<TEntity>
+    public abstract class EfRepository<TEntity, TContext> : IEfRepository<TEntity>
         where TEntity : class, IEntity, new()
         where TContext : DbContext, new()
     {
+        public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate) =>
+             FindAllHelper(predicate);
+
+        public ICollection<TEntity> FindAll() =>
+            FindAllHelper();
+
+        public TEntity Find(Expression<Func<TEntity, bool>> predicate) =>
+            Find(predicate, Array.Empty<string>());
+
+        public void Add(TEntity entity) =>
+            Transaction(entity, EntityState.Added);
+
+        public void Update(TEntity entity) =>
+            Transaction(entity, EntityState.Modified);
+
+        public void Delete(TEntity entity) =>
+            Transaction(entity, EntityState.Deleted);
+
+        public bool Exists(Expression<Func<TEntity, bool>> predicate)
+        {
+            using var context = new TContext();
+            return context.Set<TEntity>().Any(predicate);
+        }
+
         public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties) =>
             FindAllHelper(predicate, navigationProperties);
 
@@ -28,33 +52,6 @@ namespace Core.DataAccess.EntityFramework
             return query.FirstOrDefault(predicate);
         }
 
-        public void Add(TEntity entity)
-        {
-            using var context = new TContext();
-            context.Entry(entity).State = EntityState.Added;
-            context.SaveChanges();
-        }
-
-        public void Update(TEntity entity)
-        {
-            using var context = new TContext();
-            context.Entry(entity).State = EntityState.Modified;
-            context.SaveChanges();
-        }
-
-        public void Delete(TEntity entity)
-        {
-            using var context = new TContext();
-            context.Entry(entity).State = EntityState.Deleted;
-            context.SaveChanges();
-        }
-
-        public bool Exists(Expression<Func<TEntity, bool>> predicate)
-        {
-            using var context = new TContext();
-            return context.Set<TEntity>().Any(predicate);
-        }
-
         #region Private Methods
 
         private ICollection<TEntity> FindAllHelper(Expression<Func<TEntity, bool>> predicate = null, params string[] navigationProperties)
@@ -68,14 +65,30 @@ namespace Core.DataAccess.EntityFramework
                 current.Include(navigationProperty)).ToList();
         }
 
+        private void Transaction(TEntity entity, EntityState entityState)
+        {
+            using var context = new TContext();
+            context.Entry(entity).State = entityState;
+            context.SaveChanges();
+        }
+
         #endregion
     }
 
-    public abstract class EfRepository<TEntity, TContext, TKey> : EfRepository<TEntity, TContext>, IRepository<TEntity, TKey>
+    public abstract class EfRepository<TEntity, TContext, TKey> : EfRepository<TEntity, TContext>, IEfRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>, new()
         where TContext : DbContext, new()
         where TKey : IEquatable<TKey>
     {
+        public TEntity FindById(TKey id) =>
+            FindById(id, Array.Empty<string>());
+
+        public void DeleteById(TKey id) =>
+            Delete(new TEntity { Id = id });
+
+        public bool ExistsById(TKey id) =>
+            Exists(x => x.Id.Equals(id));
+
         public TEntity FindById(TKey id, params string[] navigationProperties)
         {
             using var context = new TContext();
@@ -85,19 +98,6 @@ namespace Core.DataAccess.EntityFramework
                 current.Include(navigationProperty));
 
             return query.FirstOrDefault(x => x.Id.Equals(id));
-        }
-
-        public void DeleteById(TKey id)
-        {
-            using var context = new TContext();
-            context.Entry(new TEntity { Id = id }).State = EntityState.Deleted;
-            context.SaveChanges();
-        }
-
-        public bool ExistsById(TKey id)
-        {
-            using var context = new TContext();
-            return context.Set<TEntity>().Any(x => x.Id.Equals(id));
         }
 
         public bool IsPropertiesModified(TEntity entity, string property, params string[] properties)
