@@ -1,5 +1,4 @@
 ﻿using Core.DataAccess.Mongo;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -11,23 +10,23 @@ namespace Core.Tests.DataAccess.Mongo
     [TestFixture]
     internal class MongoRepositoryTests
     {
-        private IOptions<MongoOptions> _options;
+        private MongoOptions _options;
 
         [SetUp]
         public void SetUp()
         {
-            _options = Options.Create(new MongoOptions
+            _options = new MongoOptions
             {
                 ConnectionString = "mongodb://localhost:27017",
                 DatabaseName = "test_db",
                 CollectionNames = new Dictionary<string, string> { { nameof(Category), "categories" } }
-            });
+            };
 
-            var client = new MongoClient(_options.Value.ConnectionString);
-            var database = client.GetDatabase(_options.Value.DatabaseName);
-            var categories = database.GetCollection<Category>(_options.Value.CollectionNames[nameof(Category)]);
+            var client = new MongoClient(_options.ConnectionString);
+            var database = client.GetDatabase(_options.DatabaseName);
+            var categories = database.GetCollection<Category>(_options.CollectionNames[nameof(Category)]);
 
-            client.DropDatabase(_options.Value.DatabaseName);
+            client.DropDatabase(_options.DatabaseName);
 
             categories.InsertMany(new[]
             {
@@ -70,7 +69,7 @@ namespace Core.Tests.DataAccess.Mongo
 
         private class CategoryRepository : MongoRepository<Category, string>
         {
-            public CategoryRepository(IOptions<MongoOptions> options) : base(options, nameof(Category))
+            public CategoryRepository(MongoOptions options) : base(options, nameof(Category))
             {
             }
         }

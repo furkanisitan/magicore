@@ -1,5 +1,4 @@
 ﻿using Core.Entities;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -14,11 +13,11 @@ namespace Core.DataAccess.Mongo
     {
         private readonly IMongoCollection<TEntity> _collection;
 
-        protected MongoRepository(IOptions<MongoOptions> options, string collectionNameKey)
+        protected MongoRepository(MongoOptions options, string collectionNameKey)
         {
-            var client = new MongoClient(options.Value.ConnectionString);
-            var database = client.GetDatabase(options.Value.DatabaseName);
-            _collection = database.GetCollection<TEntity>(options.Value.CollectionNames[collectionNameKey]);
+            var client = new MongoClient(options.ConnectionString);
+            var database = client.GetDatabase(options.DatabaseName);
+            _collection = database.GetCollection<TEntity>(options.CollectionNames[collectionNameKey]);
         }
 
         public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate) =>
