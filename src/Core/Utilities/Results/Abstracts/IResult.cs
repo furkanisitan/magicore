@@ -1,14 +1,13 @@
-﻿namespace Core.Utilities.Results.Abstracts
+﻿namespace Core.Utilities.Results.Abstracts;
+
+public interface IResult
 {
-    public interface IResult
-    {
-        bool Success { get; set; }
-        string Message { get; set; }
+    bool Success { get; set; }
+    string Message { get; set; }
 
-    }
+}
 
-    public interface IResult<T> : IResult
-    {
-        T Data { get; set; }
-    }
+public interface IResult<T> : IResult
+{
+    T Data { get; set; }
 }

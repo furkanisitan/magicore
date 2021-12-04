@@ -1,23 +1,22 @@
 ﻿using System;
 
-namespace FluentValidation.CustomPropertyValidators.Tests
+namespace FluentValidation.CustomPropertyValidators.Tests;
+
+internal class User
 {
-    internal class User
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
 
-        public int Weight { get; set; }
+    public int Weight { get; set; }
 
-        public double Height { get; set; }
+    public double Height { get; set; }
 
-        public bool IsEmailVerified { get; set; }
+    public bool IsEmailVerified { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
-    }
+    public DateTime DateOfBirth { get; set; }
 }
