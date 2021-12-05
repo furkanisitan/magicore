@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Core.DataAccess.EntityFramework;
 
@@ -14,20 +15,48 @@ public abstract class EfRepository<TEntity, TContext> : IEfRepository<TEntity>
     public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate) =>
         FindAllHelper(predicate);
 
+    public async Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate) =>
+        await FindAllHelperAsync(predicate);
+
     public ICollection<TEntity> FindAll() =>
         FindAllHelper();
 
-    public TEntity Find(Expression<Func<TEntity, bool>> predicate) =>
-        Find(predicate, Array.Empty<string>());
+    public async Task<ICollection<TEntity>> FindAllAsync() =>
+        await FindAllHelperAsync();
+
+    public TEntity Find(Expression<Func<TEntity, bool>> predicate)
+    {
+        using var context = new TContext();
+        var query = context.Set<TEntity>().AsQueryable();
+
+        return query.FirstOrDefault(predicate);
+    }
+
+    public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        await using var context = new TContext();
+        var query = context.Set<TEntity>().AsQueryable();
+
+        return await query.FirstOrDefaultAsync(predicate);
+    }
 
     public void Add(TEntity entity) =>
         Transaction(entity, EntityState.Added);
 
+    public async Task AddAsync(TEntity entity) =>
+        await TransactionAsync(entity, EntityState.Added);
+
     public void Update(TEntity entity) =>
         Transaction(entity, EntityState.Modified);
 
+    public async Task UpdateAsync(TEntity entity) =>
+        await TransactionAsync(entity, EntityState.Modified);
+
     public void Delete(TEntity entity) =>
         Transaction(entity, EntityState.Deleted);
+
+    public async Task DeleteAsync(TEntity entity) =>
+        await TransactionAsync(entity, EntityState.Deleted);
 
     public bool Exists(Expression<Func<TEntity, bool>> predicate)
     {
@@ -35,11 +64,63 @@ public abstract class EfRepository<TEntity, TContext> : IEfRepository<TEntity>
         return context.Set<TEntity>().Any(predicate);
     }
 
+    public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        await using var context = new TContext();
+        return await context.Set<TEntity>().AnyAsync(predicate);
+    }
+
+    #region Private Methods
+
+    private static ICollection<TEntity> FindAllHelper(Expression<Func<TEntity, bool>> predicate = null, params string[] navigationProperties)
+    {
+        using var context = new TContext();
+        var query = context.Set<TEntity>().AsQueryable();
+
+        if (predicate != null) query = query.Where(predicate);
+
+        return navigationProperties.Aggregate(query, (current, navigationProperty) =>
+            current.Include(navigationProperty)).ToList();
+    }
+
+    private static async Task<ICollection<TEntity>> FindAllHelperAsync(Expression<Func<TEntity, bool>> predicate = null, params string[] navigationProperties)
+    {
+        await using var context = new TContext();
+        var query = context.Set<TEntity>().AsQueryable();
+
+        if (predicate != null) query = query.Where(predicate);
+
+        return await navigationProperties.Aggregate(query, (current, navigationProperty) =>
+            current.Include(navigationProperty)).ToListAsync();
+    }
+
+    private static void Transaction(TEntity entity, EntityState entityState)
+    {
+        using var context = new TContext();
+        context.Entry(entity).State = entityState;
+        context.SaveChanges();
+    }
+
+    private static async Task TransactionAsync(TEntity entity, EntityState entityState)
+    {
+        await using var context = new TContext();
+        context.Entry(entity).State = entityState;
+        await context.SaveChangesAsync();
+    }
+
+    #endregion
+
     public ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties) =>
         FindAllHelper(predicate, navigationProperties);
 
+    public async Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties) =>
+        await FindAllHelperAsync(predicate, navigationProperties);
+
     public ICollection<TEntity> FindAll(params string[] navigationProperties) =>
         FindAllHelper(null, navigationProperties);
+
+    public async Task<ICollection<TEntity>> FindAllAsync(params string[] navigationProperties) =>
+        await FindAllHelperAsync(null, navigationProperties);
 
     public TEntity Find(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties)
     {
@@ -52,27 +133,16 @@ public abstract class EfRepository<TEntity, TContext> : IEfRepository<TEntity>
         return query.FirstOrDefault(predicate);
     }
 
-    #region Private Methods
-
-    private ICollection<TEntity> FindAllHelper(Expression<Func<TEntity, bool>> predicate = null, params string[] navigationProperties)
+    public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties)
     {
-        using var context = new TContext();
+        await using var context = new TContext();
         var query = context.Set<TEntity>().AsQueryable();
 
-        if (predicate != null) query = query.Where(predicate);
+        query = navigationProperties.Aggregate(query, (current, navigationProperty) =>
+            current.Include(navigationProperty));
 
-        return navigationProperties.Aggregate(query, (current, navigationProperty) =>
-            current.Include(navigationProperty)).ToList();
+        return await query.FirstOrDefaultAsync(predicate);
     }
-
-    private void Transaction(TEntity entity, EntityState entityState)
-    {
-        using var context = new TContext();
-        context.Entry(entity).State = entityState;
-        context.SaveChanges();
-    }
-
-    #endregion
 }
 
 public abstract class EfRepository<TEntity, TContext, TKey> : EfRepository<TEntity, TContext>, IEfRepository<TEntity, TKey>
@@ -80,14 +150,32 @@ public abstract class EfRepository<TEntity, TContext, TKey> : EfRepository<TEnti
     where TContext : DbContext, new()
     where TKey : IEquatable<TKey>
 {
-    public TEntity FindById(TKey id) =>
-        FindById(id, Array.Empty<string>());
+    public TEntity FindById(TKey id)
+    {
+        using var context = new TContext();
+        var query = context.Set<TEntity>().AsQueryable();
+
+        return query.FirstOrDefault(x => x.Id.Equals(id));
+    }
+    public async Task<TEntity> FindByIdAsync(TKey id)
+    {
+        await using var context = new TContext();
+        var query = context.Set<TEntity>().AsQueryable();
+
+        return await query.FirstOrDefaultAsync(x => x.Id.Equals(id));
+    }
 
     public void DeleteById(TKey id) =>
         Delete(new TEntity { Id = id });
 
+    public async Task DeleteByIdAsync(TKey id) =>
+        await DeleteAsync(new TEntity { Id = id });
+
     public bool ExistsById(TKey id) =>
         Exists(x => x.Id.Equals(id));
+
+    public async Task<bool> ExistsByIdAsync(TKey id) =>
+        await ExistsAsync(x => x.Id.Equals(id));
 
     public TEntity FindById(TKey id, params string[] navigationProperties)
     {
@@ -98,6 +186,17 @@ public abstract class EfRepository<TEntity, TContext, TKey> : EfRepository<TEnti
             current.Include(navigationProperty));
 
         return query.FirstOrDefault(x => x.Id.Equals(id));
+    }
+
+    public async Task<TEntity> FindByIdAsync(TKey id, params string[] navigationProperties)
+    {
+        await using var context = new TContext();
+        var query = context.Set<TEntity>().AsQueryable();
+
+        query = navigationProperties.Aggregate(query, (current, navigationProperty) =>
+            current.Include(navigationProperty));
+
+        return await query.FirstOrDefaultAsync(x => x.Id.Equals(id));
     }
 
     public bool IsPropertiesModified(TEntity entity, string property, params string[] properties)
@@ -111,6 +210,20 @@ public abstract class EfRepository<TEntity, TContext, TKey> : EfRepository<TEnti
 
         var entry = context.Entry(tracked);
         entry.CurrentValues.SetValues(entity);
-        return properties.Append(property).Any(x => !entry.OriginalValues[x].Equals(entry.CurrentValues[x]));
+        return properties.Append(property).Any(x => !Equals(entry.CurrentValues[x], entry.OriginalValues[x]));
+    }
+
+    public async Task<bool> IsPropertiesModifiedAsync(TEntity entity, string property, params string[] properties)
+    {
+        if (entity == null) throw new ArgumentNullException(nameof(entity));
+
+        await using var context = new TContext();
+        var tracked = await context.Set<TEntity>().SingleOrDefaultAsync(x => x.Id.Equals(entity.Id));
+
+        if (tracked == null) throw new ArgumentException("Entity not found.");
+
+        var entry = context.Entry(tracked);
+        entry.CurrentValues.SetValues(entity);
+        return properties.Append(property).Any(x => !Equals(entry.CurrentValues[x], entry.OriginalValues[x]));
     }
 }

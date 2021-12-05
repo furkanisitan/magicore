@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Core.DataAccess;
 
@@ -18,12 +19,18 @@ public interface IEfRepository<TEntity> : IRepository<TEntity>
     /// <returns>A <see cref="ICollection{T}"/> that contains <typeparamref name="TEntity"/> elements.</returns>
     ICollection<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties);
 
+    /// <inheritdoc cref="FindAll(System.Linq.Expressions.Expression{System.Func{TEntity,bool}},string[])" />
+    Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties);
+
     /// <summary>
     /// Finds all <typeparamref name="TEntity"/> elements.
     /// </summary>
     /// <param name="navigationProperties">Names of navigation properties to be included.</param>
     /// <returns>A <see cref="ICollection{T}"/> that contains <typeparamref name="TEntity"/> elements.</returns>
     ICollection<TEntity> FindAll(params string[] navigationProperties);
+
+    /// <inheritdoc cref="FindAll(string[])" />
+    Task<ICollection<TEntity>> FindAllAsync(params string[] navigationProperties);
 
     /// <summary>
     /// Finds an <typeparamref name="TEntity"/> element by the specified <paramref name="predicate"/>.
@@ -32,6 +39,9 @@ public interface IEfRepository<TEntity> : IRepository<TEntity>
     /// <param name="navigationProperties">Names of navigation properties to be included.</param>
     /// <returns>The single <typeparamref name="TEntity"/> element that satisfied a specified predicate or <see langword="null"/> if no such element is found.</returns>
     TEntity Find(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties);
+
+    /// <inheritdoc cref="Find" />
+    Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate, params string[] navigationProperties);
 }
 /// <typeparam name="TEntity">The type of the entity.</typeparam>
 /// <typeparam name="TKey">The type used for the primary key.</typeparam>
@@ -47,6 +57,9 @@ public interface IEfRepository<TEntity, in TKey> : IEfRepository<TEntity>, IRepo
     /// <returns>The single <typeparamref name="TEntity"/> element that satisfied a specified predicate or <see langword="null"/> if no such element is found.</returns>
     TEntity FindById(TKey id, params string[] navigationProperties);
 
+    /// <inheritdoc cref="FindById" />
+    Task<TEntity> FindByIdAsync(TKey id, params string[] navigationProperties);
+
     /// <summary>
     /// Checks whether the specified <paramref name="properties"/> of the <paramref name="entity"/> change according to the values in the database.
     /// </summary>
@@ -57,4 +70,7 @@ public interface IEfRepository<TEntity, in TKey> : IEfRepository<TEntity>, IRepo
     /// <exception cref="ArgumentNullException">Throws when <paramref name="entity"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">Throws when <paramref name="entity"/> not found.</exception>
     bool IsPropertiesModified([NotNull] TEntity entity, string property, params string[] properties);
+
+    /// <inheritdoc cref="IsPropertiesModified" />
+    Task<bool> IsPropertiesModifiedAsync([NotNull] TEntity entity, string property, params string[] properties);
 }
