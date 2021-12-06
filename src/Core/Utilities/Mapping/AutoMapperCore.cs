@@ -1,12 +1,10 @@
-﻿using AutoMapper;
+﻿namespace Core.Utilities.Mapping;
 
-namespace Core.Utilities.Mapping;
-
-public class AutoMapperCore : IMapperCore
+public class AutoMapperCore : IMapper
 {
-    private readonly IMapper _mapper;
+    private readonly AutoMapper.IMapper _mapper;
 
-    public AutoMapperCore(IMapper mapper)
+    public AutoMapperCore(AutoMapper.IMapper mapper)
     {
         _mapper = mapper;
     }

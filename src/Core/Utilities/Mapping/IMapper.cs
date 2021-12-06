@@ -1,6 +1,6 @@
 ﻿namespace Core.Utilities.Mapping;
 
-public interface IMapperCore
+public interface IMapper
 {
     /// <summary>
     /// Execute a mapping from the source object to a new destination object.

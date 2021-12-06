@@ -1,12 +1,10 @@
-﻿using MapsterMapper;
+﻿namespace Core.Utilities.Mapping;
 
-namespace Core.Utilities.Mapping;
-
-public class MapsterMapperCore : IMapperCore
+public class MapsterMapperCore : IMapper
 {
-    private readonly IMapper _mapper;
+    private readonly MapsterMapper.IMapper _mapper;
 
-    public MapsterMapperCore(IMapper mapper)
+    public MapsterMapperCore(MapsterMapper.IMapper mapper)
     {
         _mapper = mapper;
     }
