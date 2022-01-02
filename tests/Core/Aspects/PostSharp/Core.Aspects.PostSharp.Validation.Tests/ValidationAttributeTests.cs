@@ -1,7 +1,7 @@
 using Core.Validation;
 using NUnit.Framework;
 
-namespace Core.Aspects.PostSharp.Tests;
+namespace Core.Aspects.PostSharp.Validation.Tests;
 
 [TestFixture]
 internal class ValidationAttributeTests
@@ -19,6 +19,7 @@ internal class ValidationAttributeTests
     }
 
     [Validation(typeof(ProductValidator))]
+
     private static void InstanceMethod(Product product) { }
 
     protected class Product

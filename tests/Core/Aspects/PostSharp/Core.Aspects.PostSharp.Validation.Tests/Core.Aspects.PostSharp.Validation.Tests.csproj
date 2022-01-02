@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Validation\Core.Validation\Core.Validation.csproj" />
-    <ProjectReference Include="..\Core.Aspects.PostSharp\Core.Aspects.PostSharp.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Core\Aspects\PostSharp\Core.Aspects.PostSharp.Validation\Core.Aspects.PostSharp.Validation.csproj" />
+    <ProjectReference Include="..\..\..\..\..\src\Core\Validation\Core.Validation\Core.Validation.csproj" />
   </ItemGroup>
 
 </Project>

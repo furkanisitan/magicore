@@ -6,7 +6,7 @@ using PostSharp.Serialization;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 
-namespace Core.Aspects.PostSharp;
+namespace Core.Aspects.PostSharp.Validation;
 
 /// <summary>
 /// Custom attribute that, when applied to a method, validates the first method parameter whose type matches the <see cref="_validatorType"/>'s generic type.

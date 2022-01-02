@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core.Extensions\Core.Extensions.csproj" />
-    <ProjectReference Include="..\..\Validation\Core.Validation\Core.Validation.csproj" />
+    <ProjectReference Include="..\..\..\Core.Extensions\Core.Extensions.csproj" />
+    <ProjectReference Include="..\..\..\Validation\Core.Validation\Core.Validation.csproj" />
   </ItemGroup>
 
 </Project>
