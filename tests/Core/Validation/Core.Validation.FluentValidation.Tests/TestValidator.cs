@@ -1,6 +1,7 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 
-namespace FluentValidation.CustomPropertyValidators.Tests;
+namespace Core.Validation.FluentValidation.Tests;
 
 internal class TestValidator : InlineValidator<User>
 {

@@ -1,12 +1,12 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace FluentValidation.CustomPropertyValidators.Tests;
+namespace Core.Validation.FluentValidation.Tests;
 
 [TestFixture]
-public class UniqueValidator_IsValidShould
+public class UniqueValidatorIsValidShould
 {
-    private List<User> _users;
+    private List<User>? _users;
 
     [SetUp]
     public void SetUp()
@@ -22,8 +22,8 @@ public class UniqueValidator_IsValidShould
     [TestCase("uniqueUsername1")]
     public void IsValid_UserListNotContainsUsername_ReturnTrue(string username)
     {
-        var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)));
-        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
+        var uniqueValidator = new UniqueValidator<User, string>(x => _users!.Find(i => i.Username!.Equals(x.Username))!);
+        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator!));
         var user = new User { Username = username };
         var result = validator.Validate(user);
 
@@ -35,8 +35,8 @@ public class UniqueValidator_IsValidShould
     [TestCase("user3")]
     public void IsValid_UserListContainsUsername_ReturnFalse(string username)
     {
-        var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)));
-        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
+        var uniqueValidator = new UniqueValidator<User, string>(x => _users!.Find(i => i.Username!.Equals(x.Username))!);
+        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator!));
         var user = new User { Username = username };
         var result = validator.Validate(user);
 
@@ -48,8 +48,8 @@ public class UniqueValidator_IsValidShould
     [TestCase("user3", 3)]
     public void IsValid_UserListContainsUsernameAndIdsAreEqual_ReturnTrue(string username, int id)
     {
-        var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)), x => x.Id);
-        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
+        var uniqueValidator = new UniqueValidator<User, string>(x => _users!.Find(i => i.Username!.Equals(x.Username))!, x => x.Id);
+        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator!));
         var user = new User { Id = id, Username = username };
         var result = validator.Validate(user);
 
@@ -61,8 +61,8 @@ public class UniqueValidator_IsValidShould
     [TestCase("user3", 1)]
     public void IsValid_UserListContainsUsernameAndIdsAreNotEqual_ReturnFalse(string username, int id)
     {
-        var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)), x => x.Id);
-        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
+        var uniqueValidator = new UniqueValidator<User, string>(x => _users!.Find(i => i.Username!.Equals(x.Username))!, x => x.Id);
+        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator!));
         var user = new User { Id = id, Username = username };
         var result = validator.Validate(user);
 
@@ -74,8 +74,8 @@ public class UniqueValidator_IsValidShould
     [TestCase("user3", 3, "user3@domain.com")]
     public void IsValid_UserListContainsUsernameAndIdsAndEmailsAreEqual_ReturnTrue(string username, int id, string email)
     {
-        var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)), x => x.Id, x => x.Email);
-        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
+        var uniqueValidator = new UniqueValidator<User, string>(x => _users!.Find(i => i.Username!.Equals(x.Username))!, x => x.Id, x => x.Email!);
+        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator!));
         var user = new User { Id = id, Email = email, Username = username };
         var result = validator.Validate(user);
 
@@ -90,8 +90,8 @@ public class UniqueValidator_IsValidShould
     [TestCase("user3", 1, "user3@domain.com")]
     public void IsValid_UserListContainsUsernameAndIdsAndEmailsAreNotEqual_ReturnFalse(string username, int id, string email)
     {
-        var uniqueValidator = new UniqueValidator<User, string>(x => _users.Find(i => i.Username.Equals(x.Username)), x => x.Id, x => x.Email);
-        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator));
+        var uniqueValidator = new UniqueValidator<User, string>(x => _users!.Find(i => i.Username!.Equals(x.Username))!, x => x.Id, x => x.Email!);
+        var validator = new TestValidator(v => v.RuleFor(x => x.Username).SetValidator(uniqueValidator!));
         var user = new User { Id = id, Email = email, Username = username };
         var result = validator.Validate(user);
 
