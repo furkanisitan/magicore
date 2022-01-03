@@ -4,6 +4,7 @@ public class Result : IResult
 {
     public bool Success { get; set; }
     public string? Message { get; set; }
+    public ICollection<string>? Errors { get; set; }
 
     #region Builders
 
@@ -26,5 +27,5 @@ public class Result : IResult
 
 public class Result<T> : Result, IResult<T>
 {
-    public T? Data { get; set; }
+    public T? Payload { get; set; }
 }

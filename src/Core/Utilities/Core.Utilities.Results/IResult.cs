@@ -4,9 +4,10 @@ public interface IResult
 {
     bool Success { get; set; }
     string? Message { get; set; }
+    ICollection<string>? Errors { get; set; }
 }
 
 public interface IResult<T> : IResult
 {
-    T? Data { get; set; }
+    T? Payload { get; set; }
 }
