@@ -17,7 +17,7 @@ public static class TypeExtensions
         if (type == null) throw new ArgumentNullException(nameof(type));
         if (targetGenericType == null) throw new ArgumentNullException(nameof(targetGenericType));
 
-        return type == targetGenericType || type.MapsToGenericTypeDefinition(targetGenericType) || type.HasInterfaceThatMapsToGenericTypeDefinition(targetGenericType) || type.BaseType.IsAssignableToGenericType(targetGenericType);
+        return type == targetGenericType || type.MapsToGenericTypeDefinition(targetGenericType) || type.HasInterfaceThatMapsToGenericTypeDefinition(targetGenericType) || (type.BaseType?.IsAssignableToGenericType(targetGenericType) ?? false);
     }
 
     private static bool HasInterfaceThatMapsToGenericTypeDefinition(this Type type, Type targetGenericType) =>
