@@ -11,7 +11,7 @@ public class Mapper : IMapper
         _mapper = mapper;
     }
 
-    public TDestination Map<TDestination>(object source) =>
+    public TDestination Map<TDestination>(object? source) =>
         _mapper.Map<TDestination>(source);
 
     public TDestination Map<TSource, TDestination>(TSource source) =>

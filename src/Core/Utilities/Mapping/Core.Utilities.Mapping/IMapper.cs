@@ -8,7 +8,7 @@ public interface IMapper
     /// <typeparam name="TDestination">Destination type to create.</typeparam>
     /// <param name="source">Source object to map from.</param>
     /// <returns>Mapped destination object.</returns>
-    TDestination Map<TDestination>(object source);
+    TDestination Map<TDestination>(object? source);
 
     /// <summary>
     /// Execute a mapping from the source object to a new destination object.
