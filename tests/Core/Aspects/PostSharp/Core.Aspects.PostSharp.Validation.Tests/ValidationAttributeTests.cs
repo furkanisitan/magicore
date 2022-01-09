@@ -1,3 +1,4 @@
+using Core.Exceptions;
 using Core.Validation;
 using NUnit.Framework;
 

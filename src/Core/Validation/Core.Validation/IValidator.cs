@@ -1,4 +1,6 @@
-﻿namespace Core.Validation;
+﻿using Core.Exceptions;
+
+namespace Core.Validation;
 
 /// <summary>
 /// Defines a validator for a particular type.

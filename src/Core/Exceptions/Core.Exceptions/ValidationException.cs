@@ -1,4 +1,4 @@
-﻿namespace Core.Validation;
+﻿namespace Core.Exceptions;
 
 /// <summary>
 /// An exception that represents failed validation.

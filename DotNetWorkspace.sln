@@ -57,11 +57,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aspects", "Aspects", "{8277
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostSharp", "PostSharp", "{F91C59DE-696F-400E-9261-9DF303163605}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Aspects.PostSharp.Validation", "src\Core\Aspects\PostSharp\Core.Aspects.PostSharp.Validation\Core.Aspects.PostSharp.Validation.csproj", "{FE95F088-7B79-4355-80D1-76FABAD13484}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Aspects.PostSharp.Validation", "src\Core\Aspects\PostSharp\Core.Aspects.PostSharp.Validation\Core.Aspects.PostSharp.Validation.csproj", "{FE95F088-7B79-4355-80D1-76FABAD13484}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostSharp", "PostSharp", "{2AAEB3F9-D220-446F-8C73-18C6CF46B42C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Aspects.PostSharp.Validation.Tests", "tests\Core\Aspects\PostSharp\Core.Aspects.PostSharp.Validation.Tests\Core.Aspects.PostSharp.Validation.Tests.csproj", "{840326E9-36C0-4E3F-A442-6BEB33EEDE3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Aspects.PostSharp.Validation.Tests", "tests\Core\Aspects\PostSharp\Core.Aspects.PostSharp.Validation.Tests\Core.Aspects.PostSharp.Validation.Tests.csproj", "{840326E9-36C0-4E3F-A442-6BEB33EEDE3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exceptions", "Exceptions", "{7003F936-4E49-4106-883B-DB7F287E6A62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Exceptions", "src\Core\Exceptions\Core.Exceptions\Core.Exceptions.csproj", "{FEF439BD-453A-4FC5-B390-30CB59D0E233}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -265,6 +269,18 @@ Global
 		{840326E9-36C0-4E3F-A442-6BEB33EEDE3A}.Release|x64.Build.0 = Release|Any CPU
 		{840326E9-36C0-4E3F-A442-6BEB33EEDE3A}.Release|x86.ActiveCfg = Release|Any CPU
 		{840326E9-36C0-4E3F-A442-6BEB33EEDE3A}.Release|x86.Build.0 = Release|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Debug|x64.Build.0 = Debug|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Debug|x86.Build.0 = Debug|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Release|x64.ActiveCfg = Release|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Release|x64.Build.0 = Release|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Release|x86.ActiveCfg = Release|Any CPU
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -298,6 +314,8 @@ Global
 		{FE95F088-7B79-4355-80D1-76FABAD13484} = {F91C59DE-696F-400E-9261-9DF303163605}
 		{2AAEB3F9-D220-446F-8C73-18C6CF46B42C} = {8277BCB0-341C-4D45-8395-3AA5E3F3CFD8}
 		{840326E9-36C0-4E3F-A442-6BEB33EEDE3A} = {2AAEB3F9-D220-446F-8C73-18C6CF46B42C}
+		{7003F936-4E49-4106-883B-DB7F287E6A62} = {739CEE20-4A1E-43ED-851E-A0A858B03274}
+		{FEF439BD-453A-4FC5-B390-30CB59D0E233} = {7003F936-4E49-4106-883B-DB7F287E6A62}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {825E0DB7-0B52-4DBB-AFC7-F6C0C6AAFEA0}
