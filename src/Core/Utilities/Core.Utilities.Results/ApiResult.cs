@@ -1,38 +1,33 @@
 ﻿using System.Text;
 
-namespace Core.Utilities.Results
+namespace Core.Utilities.Results;
+
+public static class ApiResult
 {
-    public static class ApiResult
+    public static IResult Ok() =>
+        Result.Builder().Success().Message(ResultMessages.Ok).Build();
+
+    public static IResult<T> Ok<T>(T payload) =>
+        Result.Builder(payload).Success().Message(ResultMessages.Ok).Build();
+
+    public static IResult<T> Created<T>(T payload) =>
+        Result.Builder(payload).Success().Message(ResultMessages.Created).Build();
+
+    public static IResult NotFound(string? name, params KeyValuePair<string, object>[] parameters) =>
+        Result.Builder().Message(ResultMessages.ErrNotFound).AddError(BuildNotFoundMessage(name, parameters)).Build();
+
+    private static string BuildNotFoundMessage(string? name, params KeyValuePair<string, object>[] parameters)
     {
-        public const string SuccessOk = " The request has been processed successfully.";
-        public const string SuccessCreated = "Resource(s) added successfully.";
-        public const string ErrNotFound = "The resource not found.";
-        public const string ErrValidation = "A validation error has occurred.";
-        public const string ErrUniqueConstraint = "A unique constraint error has occurred.";
-        public const string ErrForeignKeyConstraint = "A foreign key constraint error has occurred.";
+        if (name == null) return string.Empty;
 
-        public static IResult Ok() =>
-            Result.Builder().Success().Message(SuccessOk).Build();
+        var builder = new StringBuilder(name + " not found");
 
-        public static IResult<T> Created<T>(T payload) =>
-            Result.Builder(payload).Success().Message(SuccessCreated).Build();
+        if (parameters.Length > 0)
+            builder.Append(" for parameters");
 
-        public static IResult NotFound(string? name, params KeyValuePair<string, object>[] parameters) =>
-            Result.Builder().Message(ErrNotFound).AddError(BuildNotFoundMessage(name, parameters)).Build();
+        foreach (var (key, value) in parameters)
+            builder.Append($" {{{key}='{value}'}}");
 
-        private static string BuildNotFoundMessage(string? name, params KeyValuePair<string, object>[] parameters)
-        {
-            if (name == null) return string.Empty;
-
-            var builder = new StringBuilder(name + " not found");
-
-            if (parameters.Length > 0)
-                builder.Append(" for parameters");
-
-            foreach (var (key, value) in parameters)
-                builder.Append($" {{{key}='{value}'}}");
-
-            return builder.Append('.').ToString();
-        }
+        return builder.Append('.').ToString();
     }
 }
