@@ -1,4 +1,5 @@
-﻿using Core.Extensions;
+﻿using Core.Exceptions;
+using Core.Extensions;
 using Core.Validation;
 using PostSharp.Aspects;
 using PostSharp.Extensibility;
