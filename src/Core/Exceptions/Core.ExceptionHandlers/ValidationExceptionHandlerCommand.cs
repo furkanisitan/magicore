@@ -1,4 +1,5 @@
 ﻿using Core.Exceptions;
+using Core.Utilities.Messaging;
 using Core.Utilities.Results;
 
 namespace Core.ExceptionHandlers;
@@ -7,13 +8,12 @@ internal class ValidationExceptionHandlerCommand : IExceptionHandlerCommand
 {
     public ExceptionHandlerResult Execute(Exception exception)
     {
-        if (exception as ValidationException is var validationException && validationException is null)
-            throw new ArgumentException($"The type of the exception is not '{nameof(ValidationException)}'.");
+        var ex = Helpers.CheckExceptionType<ValidationException>(exception);
 
         var result = new ExceptionHandlerResult
         {
             StatusCode = 400,
-            Result = Result.Builder().Message(ResultMessages.ErrValidation).Errors(validationException.Errors.ToList()).Build()
+            Result = Result.Builder().Message(ApiResultMessages.ErrValidation).Errors(ex.Errors.ToList()).Build()
         };
 
         return result;

@@ -1,9 +1,10 @@
-﻿namespace Core.Utilities.Results;
+﻿namespace Core.Utilities.Messaging;
 
-public static class ResultMessages
+public static class ApiResultMessages
 {
     public const string Ok = " The request has been processed successfully.";
     public const string Created = "Resource(s) added successfully.";
+
     public const string ErrNotFound = "The resource not found.";
     public const string ErrValidation = "A validation error has occurred.";
     public const string ErrUniqueConstraint = "A unique constraint error has occurred.";
