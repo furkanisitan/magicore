@@ -16,9 +16,6 @@ public abstract class Repository<TEntity, TKey> : IRepository<TEntity, TKey>
         var client = new MongoClient(options.ConnectionString);
         var database = client.GetDatabase(options.DatabaseName);
 
-        if (options.CollectionNames is null)
-            throw new ArgumentNullException(nameof(options.CollectionNames), "The argument cannot be null.");
-
         _collection = database.GetCollection<TEntity>(options.CollectionNames[collectionNameKey]);
     }
 
