@@ -1,4 +1,4 @@
-﻿using MagiCore.Entities;
+﻿using MagiCore.Model;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Linq.Expressions;

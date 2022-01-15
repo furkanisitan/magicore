@@ -1,4 +1,4 @@
-﻿using MagiCore.Entities;
+﻿using MagiCore.Model;
 using System.Linq.Expressions;
 
 namespace MagiCore.DataAccess;

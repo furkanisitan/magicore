@@ -6,12 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\MagiCore.Entities\MagiCore.Entities.csproj" />
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="XCOPY &quot;$(TargetDir)*.dll&quot; &quot;D:\workspace\dotnet\src\bin\&quot; /Y" />
   </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MagiCore.Model\MagiCore.Model.csproj" />
+  </ItemGroup>
 
 </Project>

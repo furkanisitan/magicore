@@ -1,4 +1,4 @@
-﻿using MagiCore.Entities;
+﻿using MagiCore.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

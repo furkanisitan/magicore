@@ -1,4 +1,4 @@
-﻿namespace MagiCore.Entities;
+﻿namespace MagiCore.Model;
 
 public interface IEntity
 {
