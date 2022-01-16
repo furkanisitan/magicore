@@ -18,6 +18,6 @@ public static class ValidatorExtensions
     /// <param name="originalItem">A function that returns the original instance of the object being validated.</param>
     /// <param name="primaryKeys">Lambda expressions that return the primary key properties of the object being validated.</param>
     /// <returns></returns>
-    public static IRuleBuilderOptions<T, TProperty> Unique<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, Func<T, object> originalItem, params Expression<Func<T, object>>[] primaryKeys) =>
+    public static IRuleBuilderOptions<T, TProperty> Unique<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, Func<T, object?> originalItem, params Expression<Func<T, object>>[] primaryKeys) =>
         ruleBuilder.SetValidator(new UniqueValidator<T, TProperty>(originalItem, primaryKeys));
 }
