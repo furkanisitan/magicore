@@ -1,13 +1,12 @@
 ﻿namespace MagiCore.Results;
 
-public interface IResult
+public interface IResult : ISuccessResult, IErrorResult
 {
-    bool Success { get; set; }
-    string? Message { get; set; }
-    ICollection<string>? Errors { get; set; }
+    new bool Success { get; set; }
+    new string? Message { get; set; }
 }
 
-public interface IResult<T> : IResult
+public interface IResult<T> : IResult, ISuccessResult<T>, IErrorResult<T>
 {
-    T? Payload { get; set; }
+    new T? Payload { get; set; }
 }
