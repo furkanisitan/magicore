@@ -12,7 +12,8 @@ public class ExceptionHandler : IExceptionHandler
         _commands = new Dictionary<Type, IExceptionHandlerCommand>
         {
             { typeof(ValidationException), new ValidationExceptionHandlerCommand() },
-            { typeof(RecordNotFoundException), new RecordNotFoundExceptionHandlerCommand() }
+            { typeof(RecordNotFoundException), new RecordNotFoundExceptionHandlerCommand() },
+            { typeof(RouteBodyMismatchException), new RouteBodyMismatchExceptionHandlerCommand() }
         };
     }
 
