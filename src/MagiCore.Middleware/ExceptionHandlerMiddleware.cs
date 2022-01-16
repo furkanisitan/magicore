@@ -30,7 +30,7 @@ public class ExceptionHandlerMiddleware
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = result.StatusCode ?? 500;
-            await context.Response.WriteAsync(JsonSerializer.Serialize(result));
+            await context.Response.WriteAsync(JsonSerializer.Serialize(result.Result));
         }
     }
 }
