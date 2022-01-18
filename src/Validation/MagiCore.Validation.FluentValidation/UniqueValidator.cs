@@ -35,11 +35,12 @@ public class UniqueValidator<T, TProperty> : PropertyValidator<T, TProperty>, IU
         foreach (var primaryKey in _primaryKeys)
         {
             var propertyName = primaryKey.GetMember().Name;
-            var propertyInfo = typeof(T).GetProperty(propertyName);
-            if (propertyInfo is null) continue;
+            var itemPropertyInfo = typeof(T).GetProperty(propertyName);
+            var originalItemPropertyInfo = originalItemInstance.GetType().GetProperty(propertyName);
+            if (itemPropertyInfo is null || originalItemPropertyInfo is null) continue;
 
-            var itemPrimaryKeyValue = propertyInfo.GetValue(context.InstanceToValidate);
-            var originalItemPrimaryKeyValue = propertyInfo.GetValue(originalItemInstance);
+            var itemPrimaryKeyValue = itemPropertyInfo.GetValue(context.InstanceToValidate);
+            var originalItemPrimaryKeyValue = originalItemPropertyInfo.GetValue(originalItemInstance);
 
             if (itemPrimaryKeyValue is not null && !itemPrimaryKeyValue.Equals(originalItemPrimaryKeyValue)) return false;
             hasEqualPrimaryKeys = true;
