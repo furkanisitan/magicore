@@ -52,5 +52,5 @@ public class UniqueValidator<T, TProperty> : PropertyValidator<T, TProperty>, IU
     public override string Name => "UniqueValidator";
 
     protected override string GetDefaultMessageTemplate(string errorCode) =>
-        "{PropertyName} must be unique.";
+        "'{PropertyName}' must be unique.";
 }
