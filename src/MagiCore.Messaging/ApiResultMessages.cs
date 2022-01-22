@@ -2,7 +2,7 @@
 
 public static class ApiResultMessages
 {
-    public const string Ok = " The request has been processed successfully.";
+    public const string Ok = "The request has been processed successfully.";
     public const string Created = "Resource(s) added successfully.";
 
     public const string ErrBadRequest = "Invalid bad request.";
