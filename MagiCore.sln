@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagiCore.Validation.FluentV
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagiCore.Model", "src\MagiCore.Model\MagiCore.Model.csproj", "{8C7628DA-FB73-4E0A-AACB-449A4316C7F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagiCore.DI", "src\MagiCore.DI\MagiCore.DI.csproj", "{5302C70E-1F8D-47A7-AB0B-EBBAB0AD0C42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagiCore.DI", "src\MagiCore.DI\MagiCore.DI.csproj", "{5302C70E-1F8D-47A7-AB0B-EBBAB0AD0C42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

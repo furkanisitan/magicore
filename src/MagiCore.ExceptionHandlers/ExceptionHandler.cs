@@ -13,7 +13,8 @@ public class ExceptionHandler : IExceptionHandler
         {
             { typeof(ValidationException), new ValidationExceptionHandlerCommand() },
             { typeof(RecordNotFoundException), new RecordNotFoundExceptionHandlerCommand() },
-            { typeof(RouteBodyMismatchException), new RouteBodyMismatchExceptionHandlerCommand() }
+            { typeof(RouteBodyMismatchException), new RouteBodyMismatchExceptionHandlerCommand() },
+            { typeof(FormatException), new FormatExceptionHandlerCommand() }
         };
     }
 
