@@ -22,7 +22,7 @@ public class ValidationException : Exception
     /// Creates a new ValidationException.
     /// </summary>
     /// <param name="errors"></param>
-    public ValidationException(IEnumerable<string> errors) : base(BuildErrorMessage(errors))
+    public ValidationException(IEnumerable<string> errors) : base(Helpers.BuildErrorMessage(errors, "Validation failed"))
     {
         Errors = errors;
     }
@@ -37,9 +37,4 @@ public class ValidationException : Exception
         Errors = errors;
     }
 
-    private static string BuildErrorMessage(IEnumerable<string> errors)
-    {
-        var arr = errors.Select(x => $"{Environment.NewLine} -- {x}");
-        return "Validation failed: " + string.Join(string.Empty, arr);
-    }
 }
