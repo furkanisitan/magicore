@@ -12,7 +12,7 @@ public class Mapper : IMapper
     }
 
     public TDestination Map<TDestination>(object? source) =>
-        _mapper.Map<TDestination>(source);
+        _mapper.Map<TDestination>(source ?? new object());
 
     public TDestination Map<TSource, TDestination>(TSource source) =>
         _mapper.Map<TSource, TDestination>(source);
