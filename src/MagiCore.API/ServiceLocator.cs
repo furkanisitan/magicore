@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace MagiCore.DI;
+namespace MagiCore.API;
 
 public static class ServiceLocator
 {
@@ -12,7 +12,7 @@ public static class ServiceLocator
     }
 
     public static IServiceProvider GetServiceProvider() =>
-        _serviceProvider ?? throw new InvalidOperationException("ServiceProvider is not configured. Use the ServiceLocator.Configure() method in your application's startup file.");
+        _serviceProvider ?? throw new InvalidOperationException($"ServiceProvider is not configured. Use the {nameof(Configure)} method in your application's startup file.");
 
     /// <inheritdoc cref="IServiceProvider.GetService" />
     public static object? GetService(Type serviceType) =>
