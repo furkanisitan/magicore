@@ -1,4 +1,5 @@
 ﻿using MagiCore.Exceptions;
+using MagiCore.Extensions;
 using MagiCore.Messaging;
 using MagiCore.Results;
 
@@ -8,7 +9,7 @@ internal class RecordNotFoundExceptionHandlerCommand : IExceptionHandlerCommand
 {
     public ExceptionHandlerResult Execute(Exception exception)
     {
-        var ex = Helpers.CheckExceptionType<RecordNotFoundException>(exception);
+        var ex = exception.Cast<RecordNotFoundException>();
 
         var result = new ExceptionHandlerResult
         {

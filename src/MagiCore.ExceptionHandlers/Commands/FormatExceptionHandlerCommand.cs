@@ -1,4 +1,5 @@
-﻿using MagiCore.Messaging;
+﻿using MagiCore.Extensions;
+using MagiCore.Messaging;
 using MagiCore.Results;
 
 namespace MagiCore.ExceptionHandlers.Commands;
@@ -7,25 +8,19 @@ internal class FormatExceptionHandlerCommand : IExceptionHandlerCommand
 {
     public ExceptionHandlerResult Execute(Exception exception)
     {
-        var ex = Helpers.CheckExceptionType<FormatException>(exception);
-
-
-        var statusCode = 500;
-        var message = ApiResultMessages.ErrInternalServer;
-
+        var ex = exception.Cast<FormatException>();
 
         if (ex.Source is "MongoDB.Bson")
-        {
-            statusCode = 400;
-            message = ApiResultMessages.ErrBadRequest;
-        }
+            return new ExceptionHandlerResult
+            {
+                StatusCode = 400,
+                Result = Result.Builder().Message(ApiResultMessages.ErrBadRequest).AddError(ex.Message).Build()
+            };
 
-        var result = new ExceptionHandlerResult
+        return new ExceptionHandlerResult
         {
-            StatusCode = statusCode,
-            Result = Result.Builder().Message(message).AddError(ex.Message).Build()
+            StatusCode = 500,
+            Result = Result.Builder().Message(ApiResultMessages.ErrInternalServer).AddError(ex.Message).Build()
         };
-
-        return result;
     }
 }

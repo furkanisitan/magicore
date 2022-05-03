@@ -1,5 +1,8 @@
 ﻿namespace MagiCore.Extensions;
 
+/// <summary>
+/// This class contains extension methods for the <see cref="Type"/>.
+/// </summary>
 public static class TypeExtensions
 {
     #region IsAssignableToGenericType

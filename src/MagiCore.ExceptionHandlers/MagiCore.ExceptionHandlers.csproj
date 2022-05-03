@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MagiCore.Exceptions\MagiCore.Exceptions.csproj" />
+    <ProjectReference Include="..\MagiCore.Extensions\MagiCore.Extensions.csproj" />
     <ProjectReference Include="..\MagiCore.Results\MagiCore.Results.csproj" />
   </ItemGroup>
 
