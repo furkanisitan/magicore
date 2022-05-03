@@ -3,7 +3,7 @@ using MagiCore.Validation;
 using NUnit.Framework;
 using System;
 
-namespace MagiCore.Aspects.PostSharp.Validation.Tests;
+namespace MagiCore.Aspects.PostSharp.Tests;
 
 [TestFixture]
 internal class ValidationAttributeTests
@@ -21,7 +21,6 @@ internal class ValidationAttributeTests
     }
 
     [Validation(typeof(ProductValidator))]
-
     private static void InstanceMethod(Product? product)
     {
         Console.WriteLine(product is null);

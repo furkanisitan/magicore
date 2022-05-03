@@ -7,16 +7,24 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 
-namespace MagiCore.Aspects.PostSharp.Validation;
+namespace MagiCore.Aspects.PostSharp;
 
 /// <summary>
-/// Custom attribute that, when applied to a method, validates the first method parameter whose type matches the <see cref="_validatorType"/>'s generic type.
+/// Aspect that, when applied to a method,
+/// validates all parameters whose type matches the validator's generic type.
 /// </summary>
 [PSerializable]
 public sealed class ValidationAttribute : OnMethodBoundaryAspect
 {
     private Type _validatorType;
 
+    /// <summary>
+    /// The constructor of <see cref="ValidationAttribute"/>.
+    /// <remarks>
+    /// The validator class must have a parameterless constructor and implement <see cref="IValidator{T}"/>.
+    /// These requirements are checked at compile time and an <see cref="InvalidAnnotationException"/> is thrown if the requirements are not met.
+    /// </remarks>
+    /// </summary>
     /// <param name="validatorType">The type of validation class.</param>
     /// <exception cref="ValidationException">Throws when validation is failed.</exception>
     public ValidationAttribute(Type validatorType)
@@ -27,24 +35,26 @@ public sealed class ValidationAttribute : OnMethodBoundaryAspect
     public override bool CompileTimeValidate(MethodBase method)
     {
         if (!_validatorType.IsAssignableToGenericType(typeof(IValidator<>)))
-            throw new InvalidAnnotationException($"The validatorType is not declared in a type derived from {typeof(IValidator<>).FullName}.");
+            throw new InvalidAnnotationException($"The {_validatorType} is not declared in a type derived from {typeof(IValidator<>).FullName}.");
+
+        if (_validatorType.GetConstructor(Type.EmptyTypes) is null)
+            throw new InvalidAnnotationException($"The {_validatorType} must have a parameterless constructor.");
 
         return base.CompileTimeValidate(method);
     }
 
     public override void OnEntry(MethodExecutionArgs args)
     {
-        var instanceType = _validatorType.GetInterface(typeof(IValidator<>).Name)?.GetGenericArguments().FirstOrDefault();
+        var instanceType = _validatorType.GetInterface(typeof(IValidator<>).Name)!.GetGenericArguments()[0];
         var instances = args.Arguments.Where(x => x.GetType() == instanceType);
-
-        var validatorConstructor = _validatorType.GetConstructor(Type.EmptyTypes);
-        var validatorObject = validatorConstructor?.Invoke(Array.Empty<object>());
+        
+        var validatorObject = _validatorType.GetConstructor(Type.EmptyTypes)!.Invoke(Array.Empty<object>());
         var validatorMethod = _validatorType.GetMethod(nameof(IValidator<object>.Validate));
 
         try
         {
             foreach (var instance in instances)
-                validatorMethod?.Invoke(validatorObject, new[] { instance });
+                validatorMethod!.Invoke(validatorObject, new[] { instance });
         }
         catch (TargetInvocationException e)
         {
