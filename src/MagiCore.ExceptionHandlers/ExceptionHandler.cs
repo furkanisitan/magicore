@@ -15,7 +15,8 @@ public class ExceptionHandler : IExceptionHandler
             { typeof(RecordNotFoundException), new RecordNotFoundExceptionHandlerCommand() },
             { typeof(RouteBodyMismatchException), new RouteBodyMismatchExceptionHandlerCommand() },
             { typeof(FormatException), new FormatExceptionHandlerCommand() },
-            { typeof(IdentityException), new IdentityExceptionHandlerCommand() }
+            { typeof(IdentityException), new IdentityExceptionHandlerCommand() },
+            { typeof(ApiClientException), new ApiClientExceptionHandlerCommand() }
         };
     }
 
