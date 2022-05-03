@@ -10,7 +10,7 @@ namespace MagiCore.Validation.FluentValidation;
 /// </summary>
 /// <typeparam name="T">The type of the object being validated.</typeparam>
 /// <typeparam name="TProperty">The type of property being validated.</typeparam>
-public class UniqueValidator<T, TProperty> : PropertyValidator<T, TProperty>, IUniqueValidator
+public class UniqueValidator<T, TProperty> : PropertyValidator<T, TProperty>
 {
     private readonly Func<T, object?> _originalItem;
     private readonly Expression<Func<T, object>>[] _primaryKeys;

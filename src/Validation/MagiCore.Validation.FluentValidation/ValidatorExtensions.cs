@@ -20,4 +20,17 @@ public static class ValidatorExtensions
     /// <returns></returns>
     public static IRuleBuilderOptions<T, TProperty> Unique<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, Func<T, object?> originalItem, params Expression<Func<T, object>>[] primaryKeys) =>
         ruleBuilder.SetValidator(new UniqueValidator<T, TProperty>(originalItem, primaryKeys));
+
+    /// <summary>
+    /// Defines a exists validator on the current rule builder.
+    /// Validation will fail if the property is not one of the <paramref name="values"/>.
+    /// </summary>
+    /// <typeparam name="T">Type of object being validated.</typeparam>
+    /// <typeparam name="TProperty">Type of property being validated.</typeparam>
+    /// <param name="ruleBuilder">The rule builder on which the validator should be defined.</param>
+    /// <param name="values">The array of values to check.</param>
+    /// <returns></returns>
+    public static IRuleBuilderOptions<T, TProperty> IsIn<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, params TProperty[] values) =>
+        ruleBuilder.SetValidator(new ExistsValidator<T, TProperty>(values));
+
 }
