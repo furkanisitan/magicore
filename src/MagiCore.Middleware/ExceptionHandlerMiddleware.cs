@@ -1,4 +1,6 @@
-﻿using MagiCore.ExceptionHandlers;
+﻿using System.Net;
+using System.Net.Mime;
+using MagiCore.ExceptionHandlers;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
@@ -28,8 +30,8 @@ public class ExceptionHandlerMiddleware
 
             if (result is null) throw;
 
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = result.StatusCode ?? 500;
+            context.Response.ContentType = MediaTypeNames.Application.Json;
+            context.Response.StatusCode = result.StatusCode ?? (int)HttpStatusCode.InternalServerError;
             await context.Response.WriteAsync(JsonSerializer.Serialize(result.Result));
         }
     }
