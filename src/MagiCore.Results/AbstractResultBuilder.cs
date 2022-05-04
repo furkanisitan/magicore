@@ -4,44 +4,39 @@
 /// Base class for classes that implement the builder pattern to classes that implement the <see cref="IResult"/>.
 /// </summary>
 /// <typeparam name="TResult">The type of the class that implements the <see cref="IResult"/>.</typeparam>
-/// <typeparam name="TBuilder">The type of the class that will inherit this class.</typeparam>
-public abstract class AbstractResultBuilder<TResult, TBuilder>
+public abstract class AbstractResultBuilder<TResult>
     where TResult : class, IResult, new()
-    where TBuilder : AbstractResultBuilder<TResult, TBuilder>
 {
-    protected readonly TBuilder Builder;
+    protected readonly AbstractResultBuilder<TResult> Builder;
     protected readonly TResult Result;
 
     protected AbstractResultBuilder()
     {
-        Builder = (TBuilder)this;
+        Builder = this;
         Result = new TResult();
     }
 
-    public TBuilder Success(bool success = true)
+    public AbstractResultBuilder<TResult> Success(bool success = true)
     {
         Result.Success = success;
         return Builder;
     }
 
-    public TBuilder Message(string message)
+    public AbstractResultBuilder<TResult> Message(string message)
     {
         Result.Message = message;
         return Builder;
     }
 
-    public TBuilder AddError(string? error)
+    public AbstractResultBuilder<TResult> Errors(params string[] errors)
     {
-        if (error is null) return Builder;
-
-        Result.Errors ??= Array.Empty<string>();
-        Result.Errors.Add(error);
+        Result.Errors = errors;
         return Builder;
     }
 
-    public TBuilder Errors(IEnumerable<string> errors)
+    public AbstractResultBuilder<TResult> Errors(IEnumerable<string> errors)
     {
-        Result.Errors = errors.ToList();
+        Result.Errors = errors;
         return Builder;
     }
 
@@ -52,11 +47,9 @@ public abstract class AbstractResultBuilder<TResult, TBuilder>
 /// Base class for classes that implement the builder pattern to classes that implement the <see cref="IResult{T}"/>.
 /// </summary>
 /// <typeparam name="TResult">The type of the class that implements the <see cref="IResult{T}"/>.</typeparam>
-/// <typeparam name="TBuilder">The type of the class that will inherit this class.</typeparam>
 /// <typeparam name="TPayload">The type of payload.</typeparam>
-public abstract class AbstractResultBuilder<TResult, TBuilder, TPayload> : AbstractResultBuilder<TResult, TBuilder>
+public abstract class AbstractResultBuilder<TResult, TPayload> : AbstractResultBuilder<TResult>
     where TResult : class, IResult<TPayload>, new()
-    where TBuilder : AbstractResultBuilder<TResult, TBuilder, TPayload>
 {
     protected AbstractResultBuilder(TPayload payload)
     {

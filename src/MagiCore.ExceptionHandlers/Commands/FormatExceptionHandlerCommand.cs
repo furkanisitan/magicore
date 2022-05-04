@@ -13,13 +13,13 @@ internal class FormatExceptionHandlerCommand : IExceptionHandlerCommand
             return new ExceptionHandlerResult
             {
                 StatusCode = 400,
-                Result = Result.Builder().Message(Messages.BadRequest).AddError(ex.Message).Build()
+                Result = Result.Builder().Message(Messages.BadRequest).Errors(ex.Message).Build()
             };
 
         return new ExceptionHandlerResult
         {
             StatusCode = 500,
-            Result = Result.Builder().Message(Messages.InternalServer).AddError(ex.Message).Build()
+            Result = Result.Builder().Message(Messages.InternalServer).Errors(ex.Message).Build()
         };
     }
 }

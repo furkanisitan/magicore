@@ -4,22 +4,25 @@ public class Result : IResult
 {
     public bool Success { get; set; }
     public string? Message { get; set; }
-    public ICollection<string>? Errors { get; set; }
+    public IEnumerable<string>? Errors { get; set; }
 
     #region Builders
 
     public static ResultBuilder Builder() => new();
-    public static ResultBuilder<T> Builder<T>(T data) => new(data);
+    public static ResultBuilder<T> Builder<T>(T payload) => new(payload);
 
     #endregion
 
     #region Builder Classes
 
-    public class ResultBuilder : AbstractResultBuilder<Result, ResultBuilder> { }
-
-    public class ResultBuilder<T> : AbstractResultBuilder<Result<T>, ResultBuilder<T>, T>
+    public class ResultBuilder : AbstractResultBuilder<Result>
     {
-        public ResultBuilder(T data) : base(data) { }
+        internal ResultBuilder() { }
+    }
+
+    public class ResultBuilder<T> : AbstractResultBuilder<Result<T>, T>
+    {
+        internal ResultBuilder(T payload) : base(payload) { }
     }
 
     #endregion
