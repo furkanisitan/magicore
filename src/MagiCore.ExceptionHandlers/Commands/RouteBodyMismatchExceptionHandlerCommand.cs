@@ -1,6 +1,5 @@
 ﻿using MagiCore.Exceptions;
 using MagiCore.Extensions;
-using MagiCore.Messaging;
 using MagiCore.Results;
 
 namespace MagiCore.ExceptionHandlers.Commands;
@@ -14,7 +13,7 @@ internal class RouteBodyMismatchExceptionHandlerCommand : IExceptionHandlerComma
         var result = new ExceptionHandlerResult
         {
             StatusCode = 400,
-            Result = Result.Builder().Message(ApiResultMessages.ErrBadRequest).AddError(ex.Message).Build()
+            Result = Result.Builder().Message(ex.Message).Errors(ex.Errors).Build()
         };
 
         return result;

@@ -34,14 +34,14 @@ public abstract class AbstractResultBuilder<TResult, TBuilder>
     {
         if (error is null) return Builder;
 
-        Result.Errors ??= new List<string>();
+        Result.Errors ??= Array.Empty<string>();
         Result.Errors.Add(error);
         return Builder;
     }
 
-    public TBuilder Errors(ICollection<string> errors)
+    public TBuilder Errors(IEnumerable<string> errors)
     {
-        Result.Errors = errors;
+        Result.Errors = errors.ToList();
         return Builder;
     }
 

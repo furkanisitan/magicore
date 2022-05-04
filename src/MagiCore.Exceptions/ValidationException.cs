@@ -5,36 +5,30 @@
 /// </summary>
 public class ValidationException : Exception
 {
-    /// <summary>
-    /// Validation errors.
-    /// </summary>
+    private const string DefaultMessage = "A validation error has occurred.";
+
     public IEnumerable<string> Errors { get; }
 
-    /// <summary>
-    /// Creates a new ValidationException.
-    /// </summary>
-    /// <param name="message"></param>
-    public ValidationException(string message) : this(message, Enumerable.Empty<string>())
+    public ValidationException(IEnumerable<string>? errors)
+        : this(DefaultMessage, errors)
+    {
+    }
+
+    public ValidationException(string? message, IEnumerable<string>? errors)
+        : this(message, null, errors)
     {
     }
 
     /// <summary>
-    /// Creates a new ValidationException.
-    /// </summary>
-    /// <param name="errors"></param>
-    public ValidationException(IEnumerable<string> errors) : base(Helpers.BuildErrorMessage(errors, "Validation failed"))
-    {
-        Errors = errors;
-    }
-
-    /// <summary>
-    /// Creates a new ValidationException.
+    /// The constructor of <see cref="ValidationException"/>.
     /// </summary>
     /// <param name="message"></param>
+    /// <param name="innerException"></param>
     /// <param name="errors"></param>
-    public ValidationException(string message, IEnumerable<string> errors) : base(message)
+    public ValidationException(string? message, Exception? innerException, IEnumerable<string>? errors)
+        : base(message, innerException)
     {
-        Errors = errors;
+        Errors = errors ?? Enumerable.Empty<string>();
     }
 
 }

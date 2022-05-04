@@ -1,6 +1,5 @@
 ﻿using MagiCore.Exceptions;
 using MagiCore.Extensions;
-using MagiCore.Messaging;
 using MagiCore.Results;
 
 namespace MagiCore.ExceptionHandlers.Commands;
@@ -14,7 +13,7 @@ internal class IdentityExceptionHandlerCommand : IExceptionHandlerCommand
         var result = new ExceptionHandlerResult
         {
             StatusCode = 400,
-            Result = Result.Builder().Message(ApiResultMessages.ErrIdentity).Errors(ex.Errors.ToList()).Build()
+            Result = Result.Builder().Message(ex.Message).Errors(ex.Errors.ToList()).Build()
         };
 
         return result;

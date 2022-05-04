@@ -1,5 +1,4 @@
 ﻿using MagiCore.Extensions;
-using MagiCore.Messaging;
 using MagiCore.Results;
 
 namespace MagiCore.ExceptionHandlers.Commands;
@@ -14,13 +13,13 @@ internal class FormatExceptionHandlerCommand : IExceptionHandlerCommand
             return new ExceptionHandlerResult
             {
                 StatusCode = 400,
-                Result = Result.Builder().Message(ApiResultMessages.ErrBadRequest).AddError(ex.Message).Build()
+                Result = Result.Builder().Message(Messages.BadRequest).AddError(ex.Message).Build()
             };
 
         return new ExceptionHandlerResult
         {
             StatusCode = 500,
-            Result = Result.Builder().Message(ApiResultMessages.ErrInternalServer).AddError(ex.Message).Build()
+            Result = Result.Builder().Message(Messages.InternalServer).AddError(ex.Message).Build()
         };
     }
 }

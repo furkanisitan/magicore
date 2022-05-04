@@ -2,6 +2,7 @@ using MagiCore.Exceptions;
 using MagiCore.Validation;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace MagiCore.Aspects.PostSharp.Tests;
 
@@ -36,7 +37,7 @@ internal class ValidationAttributeTests
         public void Validate(Product instance)
         {
             if (string.IsNullOrWhiteSpace(instance.Name))
-                throw new ValidationException("Name must not be null or whitespace.");
+                throw new ValidationException(Enumerable.Repeat("Name must not be null or whitespace.", 1));
         }
     }
 }

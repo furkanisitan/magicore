@@ -1,6 +1,5 @@
 ﻿using MagiCore.Exceptions;
 using MagiCore.Extensions;
-using MagiCore.Messaging;
 using MagiCore.Results;
 
 namespace MagiCore.ExceptionHandlers.Commands;
@@ -14,7 +13,7 @@ internal class ApiClientExceptionHandlerCommand : IExceptionHandlerCommand
         return new ExceptionHandlerResult
         {
             StatusCode = 500,
-            Result = Result.Builder().Message(ApiResultMessages.ErrInternalServer).Errors(ex.Errors.ToList()).Build()
+            Result = Result.Builder().Message(ex.Message).Errors(ex.Errors).Build()
         };
     }
 }

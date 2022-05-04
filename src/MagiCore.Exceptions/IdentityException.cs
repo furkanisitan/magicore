@@ -3,30 +3,33 @@
 /// <summary>
 /// An exception representing an identity error.
 /// </summary>
-public class IdentityException : Exception
+[Serializable]
+public sealed class IdentityException : Exception
 {
-    /// <summary>
-    /// Identity errors.
-    /// </summary>
+    private const string DefaultMessage = "The credentials are invalid.";
+
     public IEnumerable<string> Errors { get; }
 
-    /// <summary>
-    /// Creates a new IdentityException.
-    /// </summary>
-    /// <param name="errors"></param>
-    public IdentityException(IEnumerable<string> errors) : base(Helpers.BuildErrorMessage(errors, "Identity failed"))
+    public IdentityException(IEnumerable<string>? errors)
+        : this(DefaultMessage, errors)
     {
-        Errors = errors;
+    }
+
+    public IdentityException(string? message, IEnumerable<string>? errors)
+        : this(message, null, errors)
+    {
     }
 
     /// <summary>
-    /// Creates a new IdentityException.
+    /// The constructor of <see cref="IdentityException"/>.
     /// </summary>
     /// <param name="message"></param>
+    /// <param name="innerException"></param>
     /// <param name="errors"></param>
-    public IdentityException(string message, IEnumerable<string> errors) : base(message)
+    public IdentityException(string? message, Exception? innerException, IEnumerable<string>? errors)
+        : base(message, innerException)
     {
-        Errors = errors;
+        Errors = errors ?? Enumerable.Empty<string>();
     }
 
 }
