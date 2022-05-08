@@ -1,9 +1,10 @@
 ﻿using MagiCore.Results;
+using System.Net;
 
-namespace MagiCore.ExceptionHandlers;
+namespace MagiCore.ExceptionHandling;
 
 public class ExceptionHandlerResult
 {
-    public int? StatusCode { get; set; }
+    public HttpStatusCode? StatusCode { get; set; }
     public IResult? Result { get; set; }
 }

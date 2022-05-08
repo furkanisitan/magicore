@@ -1,4 +1,4 @@
-﻿namespace MagiCore.ExceptionHandlers;
+﻿namespace MagiCore.ExceptionHandling.Internal;
 
 internal static class Messages
 {

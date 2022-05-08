@@ -19,10 +19,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MagiCore.ExceptionHandlers\MagiCore.ExceptionHandlers.csproj" />
+    <ProjectReference Include="..\MagiCore.Exceptions\MagiCore.Exceptions.csproj" />
+    <ProjectReference Include="..\MagiCore.Extensions\MagiCore.Extensions.csproj" />
+    <ProjectReference Include="..\MagiCore.Results\MagiCore.Results.csproj" />
   </ItemGroup>
 
 </Project>
