@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace MagiCore.API;
+namespace MagiCore.IoC;
 
 public static class ServiceLocator
 {
@@ -20,7 +20,7 @@ public static class ServiceLocator
 
     /// <inheritdoc cref="ServiceProviderServiceExtensions.GetService{T}" />
     public static T? GetService<T>() =>
-         GetServiceProvider().GetService<T>();
+        GetServiceProvider().GetService<T>();
 
     /// <inheritdoc cref="ServiceProviderServiceExtensions.GetRequiredService" />
     public static object GetRequiredService(Type serviceType) =>

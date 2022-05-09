@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MagiCore.IoC\MagiCore.IoC.csproj" />
     <ProjectReference Include="..\MagiCore.Results\MagiCore.Results.csproj" />
   </ItemGroup>
 
