@@ -13,11 +13,13 @@ public static class TypeExtensions
     /// <returns><see langword="true"/> if the current type can be assigned to the <paramref name="genericType"/>, otherwise <see langword="false"/>.</returns>
     public static bool IsAssignableToGenericType(this Type type, Type? genericType)
     {
-        if (genericType is null) return false;
+        if (genericType is null)
+            return false;
+
         return type.IsAssignableTo(genericType) ||
                type.IsGenericType && type.GetGenericTypeDefinition() == genericType ||
                type.GetInterfaces().Where(x => x.IsGenericType).Any(x => x.GetGenericTypeDefinition() == genericType) ||
-               (type.BaseType?.IsAssignableToGenericType(genericType) ?? false);
+               type.BaseType is not null && type.BaseType.IsAssignableToGenericType(genericType);
     }
 
 }
